@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Research AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="/">
+            <span class="brand-icon">✳</span>
+            <span>Research<span class="brand-accent">AI</span></span>
+        </a>
+
+        <span class="status-pill">
+            <span class="status-dot"></span>
+            Multi-agent workspace
+        </span>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <span class="eyebrow">YOUR AI RESEARCH ASSISTANT</span>
+
+            <h1>Research anything.<br><span>Understand everything.</span></h1>
+
+            <p>
+                Multiple AI agents work together to find sources, analyze
+                evidence, write a report, and review its quality.
+            </p>
+        </section>
+
+        <section class="search-card">
+            <form id="research-form">
+                <label for="topic">What would you like to research?</label>
+
+                <textarea
+                    id="topic"
+                    name="topic"
+                    maxlength="500"
+                    rows="3"
+                    placeholder="e.g. How AI agents are changing software development..."
+                    required
+                ></textarea>
+
+                <div class="form-bottom">
+                    <span class="hint">Be specific for better results.</span>
+
+                    <button id="start-button" type="submit">
+                        <span>Start research</span>
+                        <span aria-hidden="true">↗</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section id="workspace" class="workspace" hidden>
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">WORKSPACE</span>
+                    <h2>Research activity</h2>
+                </div>
+
+                <span id="job-status" class="status-pill">
+                    Waiting to start
+                </span>
+            </div>
+
+            <div class="agent-grid">
+                <article class="agent-card" data-agent="search">
+                    <div class="agent-icon">⌕</div>
+                    <div>
+                        <h3>Search agent</h3>
+                        <p>Finding relevant sources</p>
+                    </div>
+                    <span class="agent-state">Waiting</span>
+                </article>
+
+                <article class="agent-card" data-agent="reader">
+                    <div class="agent-icon">▤</div>
+                    <div>
+                        <h3>Reader agent</h3>
+                        <p>Analyzing webpages</p>
+                    </div>
+                    <span class="agent-state">Waiting</span>
+                </article>
+
+                <article class="agent-card" data-agent="writer">
+                    <div class="agent-icon">✎</div>
+                    <div>
+                        <h3>Writer agent</h3>
+                        <p>Preparing the report</p>
+                    </div>
+                    <span class="agent-state">Waiting</span>
+                </article>
+
+                <article class="agent-card" data-agent="critic">
+                    <div class="agent-icon">✓</div>
+                    <div>
+                        <h3>Critic agent</h3>
+                        <p>Checking report quality</p>
+                    </div>
+                    <span class="agent-state">Waiting</span>
+                </article>
+            </div>
+
+            <div class="activity-card">
+                <div class="card-heading">
+                    <h3>Live activity</h3>
+                    <span class="live-label"><span></span> LIVE</span>
+                </div>
+
+                <ol id="activity-list" class="activity-list">
+                    <li class="empty-activity">Your agent updates will appear here.</li>
+                </ol>
+            </div>
+
+            <section id="results" hidden>
+                <div class="section-heading result-heading">
+                    <div>
+                        <span class="eyebrow">COMPLETED RESEARCH</span>
+                        <h2>Your research report</h2>
+                    </div>
+
+                    <button id="copy-report" class="secondary-button" type="button">
+                        Copy report
+                    </button>
+                </div>
+
+                <article class="report-card">
+                    <div id="report-content" class="report-content"></div>
+                </article>
+
+                <div class="result-grid">
+                    <article class="panel">
+                        <h3>Sources analyzed</h3>
+                        <div id="sources-list"></div>
+                    </article>
+
+                    <article class="panel">
+                        <h3>Final critic review</h3>
+                        <div id="final-feedback" class="plain-content"></div>
+                    </article>
+                </div>
+
+                <details class="panel details-panel">
+                    <summary>View initial report and feedback</summary>
+
+                    <h3>Initial report</h3>
+                    <div id="initial-report" class="plain-content"></div>
+
+                    <h3>Initial critic feedback</h3>
+                    <div id="initial-feedback" class="plain-content"></div>
+                </details>
+            </section>
+        </section>
+
+        <div id="error-message" class="error-message" role="alert" hidden></div>
+
+        <footer>
+            ResearchAI · Built with Flask and LangChain
+        </footer>
+    </main>
+</body>
+</
