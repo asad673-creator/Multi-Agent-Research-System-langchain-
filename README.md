@@ -1,81 +1,102 @@
-# Multi-Agent Research System 🤖
+# Multi-Agent Research System 🔍🤖
 
-An AI-powered research system built with **Python and LangChain** that uses multiple specialized AI agents to research a topic, analyze information, and generate a structured research report.
-
-The project explores how multiple agents can collaborate through an AI pipeline to break down complex research tasks into smaller, manageable steps.
+An AI-powered research application built with **LangChain, LangGraph, and Flask** that automates the research process through multiple specialized AI agents. The system gathers information, analyzes research findings, generates structured reports, and improves the final output through a writer–critic–revision workflow.
 
 ## 🚀 Features
 
-- **Multi-Agent Architecture:** Divide research tasks among specialized agents.
-- **Automated Research:** Process user-provided research topics through a structured pipeline.
-- **Information Analysis:** Organize findings and extract relevant insights.
-- **Report Generation:** Combine research results into a coherent, structured report.
-- **LangChain Integration:** Build reusable components for prompts, models, and agent workflows.
-- **Modular Codebase:** Keep individual agents and pipeline components separate for easier maintenance.
+- **AI Research Agents:** Specialized agents handle different stages of the research process.
+- **Web Search:** Collects relevant information and research sources for a given topic.
+- **Research Analysis:** Organizes gathered information into meaningful findings.
+- **LangGraph Workflow:** Coordinates agents through a state-based graph.
+- **Conditional Routing:** Directs execution based on the workflow's state and evaluation results.
+- **Report Generation:** Produces structured research reports based on collected information.
+- **Writer Agent:** Generates the initial research report.
+- **Critic Agent:** Evaluates the report for quality, relevance, and completeness.
+- **Revision Agent:** Refines the report using feedback from the critic.
+- **Controlled Revisions:** Uses a maximum revision limit to prevent endless review loops.
+- **Flask Web Interface:** Provides a simple browser-based interface for submitting research topics and viewing results.
 
-## 🧠 How It Works
+## 🧠 Workflow Architecture
 
-The system follows a multi-stage research workflow:
+The system uses LangGraph to manage the research pipeline and coordinate the agents.
 
-1. **User Input:** The user provides a topic to investigate.
-2. **Research Agent:** Collects relevant information using the configured research tools.
-3. **Analysis Agent:** Examines the findings and identifies important insights.
-4. **Writing Agent:** Organizes the analyzed information into a structured report.
-5. **Final Output:** Presents the generated research report to the user.
+1. **User Input:** The user submits a research topic through the Flask interface.
+2. **Research:** The search agent gathers relevant information and sources.
+3. **Analysis:** The reader agent processes the collected research material.
+4. **Writing:** The writer chain generates a structured research report.
+5. **Evaluation:** The critic chain reviews the report and determines whether improvements are needed.
+6. **Conditional Routing:** LangGraph routes the workflow toward revision or completion.
+7. **Revision:** If required, the revision chain improves the report based on the critic's feedback.
+8. **Final Output:** The completed report is displayed in the web interface.
 
-> The exact workflow depends on the agents, tools, and pipeline implemented in the project.
+### Workflow Diagram
 
-## 🏗️ Project Architecture
-
-The intended architecture separates the research pipeline into reusable components.
-
-```text
-Multi-Agent-Research-System/
-│
-├── agents/
-│   ├── research_agent.py
-│   ├── analysis_agent.py
-│   └── writing_agent.py
-│
-├── pipeline.py
-├── app.py
-├── requirements.txt
-├── .env
-├── .gitignore
-└── README.md
+```mermaid
+flowchart TD
+    A([Start]) --> B[Search Agent]
+    B --> C[Reader Agent]
+    C --> D[Writer Chain]
+    D --> E[Critic Chain]
+    E --> F{Needs Revision?}
+    F -->|Yes| G[Revision Chain]
+    G --> E
+    F -->|No| H[Final Research Report]
+    H --> I([End])
 ```
 
-*Adjust the directory structure above to match your actual project files.*
+The graph uses conditional edges and a revision limit to control execution and prevent infinite loops.
 
 ## 🛠️ Tech Stack
 
 - **Python** — Core programming language
-- **LangChain** — LLM integration and pipeline development
-- **Large Language Models (LLMs)** — Research reasoning and report generation
-- **Python dotenv** — Environment variable management
-- **Flask** — Optional web interface
+- **LangChain** — LLM integration and chain construction
+- **LangGraph** — Agent orchestration, shared state, and conditional workflows
+- **Flask** — Backend web framework
+- **HTML, CSS, JavaScript** — Frontend interface
+- **LLM Provider** — Language model used for research and report generation
+- **Search Tools** — External information retrieval
 
-Additional tools and libraries depend on the selected LLM provider and research tools.
+## 📁 Project Structure
 
-## ⚙️ Installation and Setup
+```text
+multi-agent-research-system/
+│
+├── app.py
+├── pipeline.py
+├── agents.py
+├── requirements.txt
+├── .env
+├── .gitignore
+│
+├── templates/
+│   └── index.html
+│
+└── static/
+    ├── style.css
+    └── script.js
+```
+
+*Adjust the structure above if your actual project uses different filenames or additional folders.*
+
+## ⚙️ Installation
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/Multi-Agent-Research-System.git
-cd Multi-Agent-Research-System
+git clone YOUR_GITHUB_REPOSITORY_URL
+cd YOUR_PROJECT_FOLDER
 ```
 
 ### 2. Create a virtual environment
 
 ```bash
-python -m venv .venv
+python -m venv venv
 ```
 
 Activate it on Windows:
 
-```powershell
-.venv\Scripts\Activate.ps1
+```bash
+venv\Scripts\activate
 ```
 
 ### 3. Install dependencies
@@ -86,69 +107,62 @@ pip install -r requirements.txt
 
 ### 4. Configure environment variables
 
-Create a `.env` file in the root directory and add the API keys required by your configured LLM provider and research tools.
+Create a `.env` file in the project root and add the API keys required by your configured language model and search tools.
 
 ```env
-MODEL_API_KEY=your_api_key_here
+LLM_API_KEY=your_api_key_here
+SEARCH_API_KEY=your_search_api_key_here
 ```
 
-Replace the placeholder with the actual variable name expected by your code.
-
-**Important:** Never commit your `.env` file or expose API keys publicly.
+Replace these example variable names with the exact names expected by your code. Never commit real API keys to GitHub.
 
 ### 5. Run the application
-
-For a command-line pipeline:
-
-```bash
-python pipeline.py
-```
-
-If your project uses a Flask interface:
 
 ```bash
 python app.py
 ```
 
-Use the entry point implemented in your project.
+Open the local URL printed by Flask in your browser, typically:
 
-## 🎯 Project Goals
+```text
+http://127.0.0.1:5000
+```
 
-- Understand multi-agent AI system design.
-- Build modular LLM-powered workflows.
-- Explore task delegation between specialized agents.
-- Improve research automation and information synthesis.
-- Develop practical experience with LangChain and generative AI.
+## 🔄 Why LangGraph?
+
+LangGraph makes the pipeline more than a simple sequence of LLM calls. It allows the application to:
+
+- Maintain shared research state between nodes.
+- Define explicit transitions between agents.
+- Implement conditional branching.
+- Revisit earlier stages when revisions are necessary.
+- Enforce workflow limits for more controlled execution.
+
+This architecture makes the research process more organized, extensible, and easier to debug.
 
 ## 🔮 Future Improvements
 
-- Add web search and source retrieval tools.
-- Implement source citations and reference tracking.
-- Add parallel execution for independent research tasks.
-- Introduce LangGraph for more advanced agent orchestration.
-- Add persistent memory and conversation history.
-- Build a polished web interface for research queries.
-- Evaluate research quality, factual accuracy, and source reliability.
-- Export generated reports to Markdown or PDF.
+- Parallel research across multiple sources
+- Source verification and citation generation
+- Persistent research history
+- Downloadable PDF and Markdown reports
+- Streaming progress updates in the frontend
+- Human approval before final report generation
+- Improved error handling and retry mechanisms
+- Deployment to a cloud hosting platform
 
-## 📚 Learning Outcomes
+## 🎯 Project Goal
 
-This project provides practical experience with:
+The goal of this project is to explore how multiple AI agents can collaborate within a controlled workflow to automate research and generate higher-quality reports.
 
-- LLM application development
-- Prompt engineering
-- Agent design and tool calling
-- Multi-step AI pipelines
-- Research automation
-- Modular Python development
-- Building AI applications with LangChain
+It combines LLM chains, agent orchestration, conditional graph execution, iterative refinement, and web application development in a practical AI engineering project.
 
 ## 👨‍💻 Author
 
 **Asad Ajaz**
 
-GitHub: [@asad673-creator](https://github.com/asad673-creator)
+Interested in Machine Learning, Deep Learning, Generative AI, RAG Systems, and AI Agent Development.
 
 ---
 
-⭐ If you find this project useful, consider starring the repository.
+*Built as a hands-on project to explore multi-agent AI systems and LangGraph-based workflow orchestration.*
