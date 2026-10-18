@@ -11,7 +11,7 @@ from tools import web_search, scrape_url
 load_dotenv()
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-3.5-flash",
+    model="gemini-3.5-flash-lite",
     temperature=0
 )
 
